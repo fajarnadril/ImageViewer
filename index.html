@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Gallery</title>
+  <title>Image Slideshow</title>
   <style>
     * {
       margin: 0;
@@ -179,10 +179,10 @@
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
 
-    // Ambil nomor gambar dari URL parameter
+    // Ambil nomor gambar dari URL parameter (img atau id)
     function getStartImageNumber() {
       const params = new URLSearchParams(window.location.search);
-      const imgParam = params.get('img');
+      const imgParam = params.get('img') || params.get('id');
       return parseInt(imgParam) || 1;
     }
 
@@ -214,10 +214,13 @@
 
         // Dapatkan nomor gambar dari URL parameter
         const startImageNumber = getStartImageNumber();
+
         // Cari index berdasarkan nomor gambar
         const startIndex = images.findIndex(img => img.number === startImageNumber);
+
         // Jika tidak ditemukan, gunakan index 0
         const finalIndex = startIndex >= 0 ? startIndex : 0;
+
         showSlide(finalIndex);
       } else {
         loading.textContent = 'Tidak ada gambar ditemukan. Periksa URL repository.';
@@ -227,8 +230,10 @@
     // Tampilkan slide berdasarkan index
     function showSlide(index) {
       if (images.length === 0) return;
+
       currentIndex = index;
       const image = images[currentIndex];
+
       mainImage.src = image.url;
       counter.textContent = `${currentIndex + 1}/${images.length}`;
       info.textContent = `Gambar ${image.number}`;
